@@ -1,0 +1,27 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# Dossiers de build ou rapports
+reports/
+coverage/
+
+# Environnement / config locale
+.env
+.env.local
+.DS_Store
+*.local
+
+# Mac / Windows fichiers système
+Thumbs.db
+desktop.ini
+
+# Logs
+logs/
+*.log
+
+# VSCode config (optionnel)
+.vscode/
