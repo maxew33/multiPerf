@@ -32,7 +32,7 @@ function formatMs(ms) {
       return;
     }
 
-    loader.style.display = 'block';
+    loader.style.display = 'grid';
     results.innerHTML = '';
 
     try {

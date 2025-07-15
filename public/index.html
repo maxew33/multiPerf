@@ -1,372 +1,458 @@
-<!-- <!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <title>Audit Lighthouse</title>
-  <style>
-    body { font-family: sans-serif; padding: 2rem; }
-    textarea { width: 100%; height: 150px; }
-    iframe { width: 100%; height: 600px; border: none; margin-top: 1rem; }
-  </style>
-</head>
-<body>
-  <h1>Audit Lighthouse Web</h1>
-  <form id="audit-form">
-    <label>Entrez les URLs (une par ligne) :</label><br>
-    <textarea name="urls"></textarea><br>
-    <button type="submit">Lancer l'audit</button>
-  </form>
-
-  <div id="results"></div>
-  <div id="loader" style="display:none; margin-top: 1rem;">
-    <p>🕐 Audit en cours... Veuillez patienter.</p>
-  </div>
-  
-  <script>
-    document.getElementById('audit-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-  
-      const textarea = e.target.elements.urls;
-      const urls = textarea.value.trim().split('\n').filter(Boolean);
-      const loader = document.getElementById('loader');
-      const results = document.getElementById('results');
-  
-      if (!urls.length) {
-        alert('Veuillez entrer au moins une URL.');
-        return;
-      }
-  
-      // Affiche le loader
-      loader.style.display = 'block';
-      results.innerHTML = '';
-  
-      try {
-        const response = await fetch('/audit', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ urls })
-        });
-  
-        const data = await response.json();
-  
-        // Cache le loader
-        loader.style.display = 'none';
-  
-        if (!data.reports.length) {
-          results.innerHTML = '<p>Aucun rapport généré.</p>';
-          return;
-        }
-  
-        data.reports.forEach(report => {
-          const iframe = document.createElement('iframe');
-          iframe.src = report;
-          results.appendChild(iframe);
-        });
-      } catch (error) {
-        loader.style.display = 'none';
-        console.error('Erreur:', error);
-        alert("Erreur lors de l'audit. Consultez la console.");
-      }
-    });
-  </script>
-  
-</body>
-</html> -->
-
-<!-- 
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <title>Audit Lighthouse</title>
-  <style>
-    body { font-family: sans-serif; padding: 2rem; }
-    textarea { width: 100%; height: 150px; }
-    table { width: 100%; border-collapse: collapse; margin-top: 2rem; }
-    th, td { border: 1px solid #ccc; padding: 0.5rem; text-align: center; }
-    th { background-color: #f2f2f2; }
-    .env-title { background-color: #eee; font-weight: bold; }
-    .url-row { background-color: #f9f9f9; font-weight: bold; }
-    .loader { margin-top: 1rem; font-weight: bold; }
-    .small { font-size: 0.9em; }
-  </style>
-</head>
-<body>
-  <h1>Audit Lighthouse Web</h1>
-  <form id="audit-form">
-    <label>Entrez les URLs (une par ligne) :</label><br>
-    <textarea name="urls" placeholder="https://example.com\nhttps://autresite.com"></textarea><br>
-    <button type="submit">Lancer l'audit</button>
-  </form>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Audit Lighthouse - Résultats</title>
+    <link rel="stylesheet" href="./style/style.css" />
+    <script src="./script/main.js" async></script>
+  </head>
+  <body>
+    <div id="loader" class="loader" style="display: none">
+      <div class="dots-container">
+        <div class="dot"></div>
+        <div class="dot">
+          <div class="horns"></div>
+          <div class="face"></div>
+          <div class="mouth"></div>
+          <div class="eyes"></div>
+        </div>
+        <div class="dot"></div>
+      </div>
+    </div>
+      <h1>Audit Lighthouse Web</h1>
+      <form id="audit-form">
+        <label>Entrez les URLs (une par ligne) :</label><br />
+        <textarea name="urls" placeholder="https://example.com"></textarea
+        ><br />
+        <button type="submit">Lancer l'audit</button>
+      </form>
 
-  <div id="loader" class="loader" style="display:none;">🕐 Audit en cours... Veuillez patienter.</div>
-  <div id="results"></div>
+      <table>
+        <caption>
+          Résultats Moyens des Audits Lighthouse (3 passes)
+        </caption>
+        <thead>
+          <tr>
+            <th>URL</th>
+            <th>Appareil</th>
+            <th>Perf. (μ ± σ)</th>
+            <th>SEO (μ ± σ)</th>
+            <th>Access. (μ ± σ)</th>
+            <th>Bonnes pratiques (μ ± σ)</th>
+            <th>FCP</th>
+            <th>LCP</th>
+            <th>TBT</th>
+            <th>SI</th>
+            <th>CLS</th>
+            <th>Rapports</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>https://www.tui.fr</td>
+            <td>mobile</td>
+            <td>87.3% ± 4.5</td>
+            <td>100.0% ± 0.0</td>
+            <td>78.0% ± 0.0</td>
+            <td>67.0% ± 0.0</td>
+            <td>636 ms ± 470 ms</td>
+            <td>681 ms ± 457 ms</td>
+            <td>21 ms ± 15 ms</td>
+            <td>1.27 s ± 278 ms</td>
+            <td>0.276 ± 0.105</td>
+            <td>
+              <a
+                class="report-link"
+                href="/reports/report_www_tui_fr_mobile_1750952932699_1.html"
+                target="_blank"
+                >Rapport 1</a
+              ><br /><a
+                class="report-link"
+                href="/reports/report_www_tui_fr_mobile_1750952961932_2.html"
+                target="_blank"
+                >Rapport 2</a
+              ><br /><a
+                class="report-link"
+                href="/reports/report_www_tui_fr_mobile_1750952990983_3.html"
+                target="_blank"
+                >Rapport 3</a
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>https://www.tui.fr</td>
+            <td>desktop</td>
+            <td>93.0% ± 0.0</td>
+            <td>100.0% ± 0.0</td>
+            <td>85.0% ± 0.0</td>
+            <td>67.0% ± 0.0</td>
+            <td>312 ms ± 34 ms</td>
+            <td>387 ms ± 53 ms</td>
+            <td>7 ms ± 4 ms</td>
+            <td>4.88 s ± 8 ms</td>
+            <td>0.113 ± 0.001</td>
+            <td>
+              <a
+                class="report-link"
+                href="/reports/report_www_tui_fr_desktop_1750953019418_1.html"
+                target="_blank"
+                >Rapport 1</a
+              ><br /><a
+                class="report-link"
+                href="/reports/report_www_tui_fr_desktop_1750953047650_2.html"
+                target="_blank"
+                >Rapport 2</a
+              ><br /><a
+                class="report-link"
+                href="/reports/report_www_tui_fr_desktop_1750953076049_3.html"
+                target="_blank"
+                >Rapport 3</a
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>https://www.tui.fr/voyages-nos-destinations/depart-paris</td>
+            <td>mobile</td>
+            <td>100.0% ± 0.0</td>
+            <td>93.0% ± 0.0</td>
+            <td>83.0% ± 0.0</td>
+            <td>67.0% ± 0.0</td>
+            <td>653 ms ± 482 ms</td>
+            <td>653 ms ± 482 ms</td>
+            <td>3 ms ± 1 ms</td>
+            <td>1.55 s ± 297 ms</td>
+            <td>0.028 ± 0.008</td>
+            <td>
+              <a
+                class="report-link"
+                href="/reports/report_www_tui_fr_mobile_1750953107742_1.html"
+                target="_blank"
+                >Rapport 1</a
+              ><br /><a
+                class="report-link"
+                href="/reports/report_www_tui_fr_mobile_1750953138983_2.html"
+                target="_blank"
+                >Rapport 2</a
+              ><br /><a
+                class="report-link"
+                href="/reports/report_www_tui_fr_mobile_1750953170661_3.html"
+                target="_blank"
+                >Rapport 3</a
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>https://www.tui.fr/voyages-nos-destinations/depart-paris</td>
+            <td>desktop</td>
+            <td>100.0% ± 0.0</td>
+            <td>93.0% ± 0.0</td>
+            <td>90.0% ± 0.0</td>
+            <td>67.0% ± 0.0</td>
+            <td>380 ms ± 20 ms</td>
+            <td>380 ms ± 20 ms</td>
+            <td>4 ms ± 1 ms</td>
+            <td>1.26 s ± 10 ms</td>
+            <td>0.008 ± 0.000</td>
+            <td>
+              <a
+                class="report-link"
+                href="/reports/report_www_tui_fr_desktop_1750953203917_1.html"
+                target="_blank"
+                >Rapport 1</a
+              ><br /><a
+                class="report-link"
+                href="/reports/report_www_tui_fr_desktop_1750953236421_2.html"
+                target="_blank"
+                >Rapport 2</a
+              ><br /><a
+                class="report-link"
+                href="/reports/report_www_tui_fr_desktop_1750953270125_3.html"
+                target="_blank"
+                >Rapport 3</a
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>
+              https://www.tui.fr/club-lookea-puente-real-sans-transport_AGPSLFITPRE
+            </td>
+            <td>mobile</td>
+            <td>91.7% ± 4.7</td>
+            <td>93.0% ± 0.0</td>
+            <td>79.0% ± 0.0</td>
+            <td>67.0% ± 0.0</td>
+            <td>2.00 s ± 485 ms</td>
+            <td>2.02 s ± 448 ms</td>
+            <td>5 ms ± 6 ms</td>
+            <td>2.62 s ± 396 ms</td>
+            <td>0.112 ± 0.131</td>
+            <td>
+              <a
+                class="report-link"
+                href="/reports/report_www_tui_fr_mobile_1750953305417_1.html"
+                target="_blank"
+                >Rapport 1</a
+              ><br /><a
+                class="report-link"
+                href="/reports/report_www_tui_fr_mobile_1750953341090_2.html"
+                target="_blank"
+                >Rapport 2</a
+              ><br /><a
+                class="report-link"
+                href="/reports/report_www_tui_fr_mobile_1750953376864_3.html"
+                target="_blank"
+                >Rapport 3</a
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>
+              https://www.tui.fr/club-lookea-puente-real-sans-transport_AGPSLFITPRE
+            </td>
+            <td>desktop</td>
+            <td>93.0% ± 5.0</td>
+            <td>93.0% ± 0.0</td>
+            <td>79.0% ± 0.0</td>
+            <td>67.0% ± 0.0</td>
+            <td>636 ms ± 385 ms</td>
+            <td>684 ms ± 353 ms</td>
+            <td>3 ms ± 0 ms</td>
+            <td>1.67 s ± 414 ms</td>
+            <td>0.145 ± 0.100</td>
+            <td>
+              <a
+                class="report-link"
+                href="/reports/report_www_tui_fr_desktop_1750953411196_1.html"
+                target="_blank"
+                >Rapport 1</a
+              ><br /><a
+                class="report-link"
+                href="/reports/report_www_tui_fr_desktop_1750953446781_2.html"
+                target="_blank"
+                >Rapport 2</a
+              ><br /><a
+                class="report-link"
+                href="/reports/report_www_tui_fr_desktop_1750953481623_3.html"
+                target="_blank"
+                >Rapport 3</a
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>https://www.tui.fr/?vlight=1/</td>
+            <td>mobile</td>
+            <td>93.7% ± 1.2</td>
+            <td>93.0% ± 0.0</td>
+            <td>78.0% ± 0.0</td>
+            <td>67.0% ± 0.0</td>
+            <td>1.70 s ± 1.02 s</td>
+            <td>1.75 s ± 954 ms</td>
+            <td>9 ms ± 12 ms</td>
+            <td>1.98 s ± 699 ms</td>
+            <td>0.073 ± 0.076</td>
+            <td>
+              <a
+                class="report-link"
+                href="/reports/report_www_tui_fr_mobile_1750953510330_1.html"
+                target="_blank"
+                >Rapport 1</a
+              ><br /><a
+                class="report-link"
+                href="/reports/report_www_tui_fr_mobile_1750953538470_2.html"
+                target="_blank"
+                >Rapport 2</a
+              ><br /><a
+                class="report-link"
+                href="/reports/report_www_tui_fr_mobile_1750953566701_3.html"
+                target="_blank"
+                >Rapport 3</a
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>https://www.tui.fr/?vlight=1/</td>
+            <td>desktop</td>
+            <td>93.0% ± 0.0</td>
+            <td>93.0% ± 0.0</td>
+            <td>85.0% ± 0.0</td>
+            <td>67.0% ± 0.0</td>
+            <td>371 ms ± 10 ms</td>
+            <td>419 ms ± 65 ms</td>
+            <td>4 ms ± 1 ms</td>
+            <td>4.92 s ± 46 ms</td>
+            <td>0.112 ± 0.001</td>
+            <td>
+              <a
+                class="report-link"
+                href="/reports/report_www_tui_fr_desktop_1750953595084_1.html"
+                target="_blank"
+                >Rapport 1</a
+              ><br /><a
+                class="report-link"
+                href="/reports/report_www_tui_fr_desktop_1750953623128_2.html"
+                target="_blank"
+                >Rapport 2</a
+              ><br /><a
+                class="report-link"
+                href="/reports/report_www_tui_fr_desktop_1750953650944_3.html"
+                target="_blank"
+                >Rapport 3</a
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>
+              https://www.tui.fr/voyages-nos-destinations/depart-paris/?vlight=1/
+            </td>
+            <td>mobile</td>
+            <td>99.0% ± 0.8</td>
+            <td>86.0% ± 0.0</td>
+            <td>83.0% ± 0.0</td>
+            <td>67.0% ± 0.0</td>
+            <td>1.26 s ± 71 ms</td>
+            <td>1.26 s ± 71 ms</td>
+            <td>2 ms ± 1 ms</td>
+            <td>2.00 s ± 50 ms</td>
+            <td>0.058 ± 0.025</td>
+            <td>
+              <a
+                class="report-link"
+                href="/reports/report_www_tui_fr_mobile_1750953683210_1.html"
+                target="_blank"
+                >Rapport 1</a
+              ><br /><a
+                class="report-link"
+                href="/reports/report_www_tui_fr_mobile_1750953715074_2.html"
+                target="_blank"
+                >Rapport 2</a
+              ><br /><a
+                class="report-link"
+                href="/reports/report_www_tui_fr_mobile_1750953746932_3.html"
+                target="_blank"
+                >Rapport 3</a
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>
+              https://www.tui.fr/voyages-nos-destinations/depart-paris/?vlight=1/
+            </td>
+            <td>desktop</td>
+            <td>100.0% ± 0.0</td>
+            <td>86.0% ± 0.0</td>
+            <td>90.0% ± 0.0</td>
+            <td>67.0% ± 0.0</td>
+            <td>419 ms ± 44 ms</td>
+            <td>419 ms ± 44 ms</td>
+            <td>3 ms ± 1 ms</td>
+            <td>1.39 s ± 27 ms</td>
+            <td>0.018 ± 0.000</td>
+            <td>
+              <a
+                class="report-link"
+                href="/reports/report_www_tui_fr_desktop_1750953778545_1.html"
+                target="_blank"
+                >Rapport 1</a
+              ><br /><a
+                class="report-link"
+                href="/reports/report_www_tui_fr_desktop_1750953810962_2.html"
+                target="_blank"
+                >Rapport 2</a
+              ><br /><a
+                class="report-link"
+                href="/reports/report_www_tui_fr_desktop_1750953843394_3.html"
+                target="_blank"
+                >Rapport 3</a
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>
+              https://www.tui.fr/club-lookea-puente-real-sans-transport_AGPSLFITPRE/?vlight=1/
+            </td>
+            <td>mobile</td>
+            <td>98.7% ± 0.5</td>
+            <td>86.0% ± 0.0</td>
+            <td>79.0% ± 0.0</td>
+            <td>67.0% ± 0.0</td>
+            <td>1.30 s ± 69 ms</td>
+            <td>1.32 s ± 89 ms</td>
+            <td>32 ms ± 42 ms</td>
+            <td>2.21 s ± 71 ms</td>
+            <td>0.057 ± 0.020</td>
+            <td>
+              <a
+                class="report-link"
+                href="/reports/report_www_tui_fr_mobile_1750953879790_1.html"
+                target="_blank"
+                >Rapport 1</a
+              ><br /><a
+                class="report-link"
+                href="/reports/report_www_tui_fr_mobile_1750953915241_2.html"
+                target="_blank"
+                >Rapport 2</a
+              ><br /><a
+                class="report-link"
+                href="/reports/report_www_tui_fr_mobile_1750953950997_3.html"
+                target="_blank"
+                >Rapport 3</a
+              >
+            </td>
+          </tr>
+          <tr>
+            <td>
+              https://www.tui.fr/club-lookea-puente-real-sans-transport_AGPSLFITPRE/?vlight=1/
+            </td>
+            <td>desktop</td>
+            <td>100.0% ± 0.0</td>
+            <td>86.0% ± 0.0</td>
+            <td>79.0% ± 0.0</td>
+            <td>67.0% ± 0.0</td>
+            <td>429 ms ± 31 ms</td>
+            <td>475 ms ± 59 ms</td>
+            <td>4 ms ± 1 ms</td>
+            <td>1.37 s ± 61 ms</td>
+            <td>0.003 ± 0.000</td>
+            <td>
+              <a
+                class="report-link"
+                href="/reports/report_www_tui_fr_desktop_1750953986702_1.html"
+                target="_blank"
+                >Rapport 1</a
+              ><br /><a
+                class="report-link"
+                href="/reports/report_www_tui_fr_desktop_1750954020959_2.html"
+                target="_blank"
+                >Rapport 2</a
+              ><br /><a
+                class="report-link"
+                href="/reports/report_www_tui_fr_desktop_1750954055831_3.html"
+                target="_blank"
+                >Rapport 3</a
+              >
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
-  <script>
-    document.getElementById('audit-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
+      <!-- Signature -->
 
-      const textarea = e.target.elements.urls;
-      const urls = textarea.value.trim().split('\n').filter(Boolean);
-      const loader = document.getElementById('loader');
-      const results = document.getElementById('results');
-
-      if (!urls.length) {
-        alert('Veuillez entrer au moins une URL.');
-        return;
-      }
-
-      loader.style.display = 'block';
-      results.innerHTML = '';
-
-      try {
-        const response = await fetch('/audit', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ urls })
-        });
-
-        const data = await response.json();
-        loader.style.display = 'none';
-
-        if (!data.results?.length) {
-          results.innerHTML = '<p>Aucun rapport généré.</p>';
-          return;
-        }
-
-        const table = document.createElement('table');
-        table.innerHTML = `
-          <thead>
-            <tr>
-              <th>URL</th>
-              <th>Environnement</th>
-              <th>Performance</th>
-              <th>SEO</th>
-              <th>Accessibilité</th>
-              <th>Rapports</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        `;
-
-        const tbody = table.querySelector('tbody');
-
-        data.results.forEach(site => {
-          const { url, audits } = site;
-
-          const firstRow = document.createElement('tr');
-          firstRow.className = 'url-row';
-          firstRow.innerHTML = `<td colspan="6">${url}</td>`;
-          tbody.appendChild(firstRow);
-
-          Object.entries(audits).forEach(([env, result]) => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-              <td></td>
-              <td>${env}</td>
-              <td>${result.average.performance}</td>
-              <td>${result.average.seo}</td>
-              <td>${result.average.accessibility}</td>
-              <td class="small">
-                ${result.reports.map(link => `<a href="${link}" target="_blank">rapport</a>`).join(', ')}
-              </td>
-            `;
-            tbody.appendChild(row);
-          });
-        });
-
-        results.appendChild(table);
-      } catch (error) {
-        loader.style.display = 'none';
-        console.error('Erreur:', error);
-        alert("Erreur lors de l'audit. Consultez la console.");
-      }
-    });
-  </script>
-</body>
-</html> -->
-
-<!-- <!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8" />
-  <title>Audit Lighthouse - Résultats</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      padding: 2rem;
-      max-width: 900px;
-      margin: auto;
-    }
-    textarea {
-      width: 100%;
-      height: 150px;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 1rem;
-    }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 0.5rem;
-      text-align: center;
-    }
-    th {
-      background: #f5f5f5;
-    }
-    caption {
-      font-weight: bold;
-      margin-top: 1.5rem;
-      margin-bottom: 0.5rem;
-      font-size: 1.1rem;
-    }
-    .loader {
-      margin-top: 1rem;
-      font-style: italic;
-    }
-    a.report-link {
-      color: #0366d6;
-      text-decoration: none;
-    }
-  </style>
-</head>
-<body>
-  <h1>Audit Lighthouse Web</h1>
-  <form id="audit-form">
-    <label>Entrez les URLs (une par ligne) :</label><br />
-    <textarea name="urls" placeholder="https://example.com"></textarea><br />
-    <button type="submit">Lancer l'audit</button>
-  </form>
-
-  <div id="loader" class="loader" style="display:none;">🕐 Audit en cours... Veuillez patienter.</div>
-  <div id="results"></div>
-
-  <script>
-    function formatMs(ms) {
-      if (ms == null || isNaN(ms)) return '—';
-      if (ms > 1000) return (ms / 1000).toFixed(2) + ' s';
-      return Math.round(ms) + ' ms';
-    }
-
-    function formatCls(value) {
-      if (value == null || isNaN(value)) return '—';
-      return value.toFixed(3);
-    }
-
-    document.getElementById('audit-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const textarea = e.target.elements.urls;
-      const urls = textarea.value.trim().split('\n').filter(Boolean);
-      const loader = document.getElementById('loader');
-      const results = document.getElementById('results');
-
-      if (!urls.length) {
-        alert('Veuillez entrer au moins une URL.');
-        return;
-      }
-
-      loader.style.display = 'block';
-      results.innerHTML = '';
-
-      try {
-        const response = await fetch('/audit', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ urls })
-        });
-
-        const data = await response.json();
-        loader.style.display = 'none';
-
-        if (!data.results || data.results.length === 0) {
-          results.innerHTML = '<p>Aucun résultat d\'audit disponible.</p>';
-          return;
-        }
-
-        // Création du tableau
-        const table = document.createElement('table');
-        table.innerHTML = `
-          <caption>Résultats Moyens des Audits Lighthouse (3 passes)</caption>
-          <thead>
-            <tr>
-              <th>URL</th>
-              <th>Performance</th>
-              <th>SEO</th>
-              <th>Accessibilité</th>
-              <th>Bonnes Pratiques</th>
-              <th>FCP</th>
-              <th>LCP</th>
-              <th>TBT</th>
-              <th>Speed Index</th>
-              <th>CLS</th>
-              <th>Rapports</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        `;
-
-        const tbody = table.querySelector('tbody');
-
-        data.results.forEach(item => {
-          const tr = document.createElement('tr');
-
-          // Format des rapports en liens cliquables
-          const reportsLinks = item.reports
-            .map((r, i) => `<a class="report-link" href="${r}" target="_blank" rel="noopener noreferrer">Rapport ${i + 1}</a>`)
-            .join('<br>');
-
-          tr.innerHTML = `
-            <td>${item.url}</td>
-            <td>${item.averageScores.performance.toFixed(1)}%</td>
-            <td>${item.averageScores.seo.toFixed(1)}%</td>
-            <td>${item.averageScores.accessibility.toFixed(1)}%</td>
-            <td>${item.averageScores.bestPractices.toFixed(1)}%</td>
-            <td>${formatMs(item.averageMetrics.fcp)}</td>
-            <td>${formatMs(item.averageMetrics.lcp)}</td>
-            <td>${formatMs(item.averageMetrics.tbt)}</td>
-            <td>${formatMs(item.averageMetrics.si)}</td>
-            <td>${formatCls(item.averageMetrics.cls)}</td>
-            <td>${reportsLinks}</td>
-          `;
-
-          tbody.appendChild(tr);
-        });
-
-        results.appendChild(table);
-      } catch (error) {
-        loader.style.display = 'none';
-        console.error('Erreur:', error);
-        alert("Erreur lors de l'audit. Consultez la console.");
-      }
-    });
-  </script>
-</body>
-</html>
- -->
-
- <!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8" />
-  <title>Audit Lighthouse - Résultats</title>
-  <link rel="stylesheet" href="./style/style.css" />
-  <script src="./script/main.js" async></script>
-</head>
-<body>
-  <h1>Audit Lighthouse Web</h1>
-  <form id="audit-form">
-    <label>Entrez les URLs (une par ligne) :</label><br />
-    <textarea name="urls" placeholder="https://example.com"></textarea><br />
-    <button type="submit">Lancer l'audit</button>
-  </form>
-
-  <div id="loader" class="loader" style="display:none;">🕐 Audit en cours... Veuillez patienter.</div>
-  <div id="results"></div>
-
-  <script>
-    
-  </script>
-</body>
+      <a href="https://maxime-malfilatre.com" class="signature" target="_blank">
+        <div class="link">
+          <span class="brace"> { </span>
+          <span class="before">
+            <span class="before-text"> &nbsp;by </span>
+          </span>
+          <span class="my-name"> m </span>
+          <span class="after">
+            <span class="after-text">
+              <span class="spin">axe</span>
+              <span>w</span>
+            </span>
+          </span>
+          <span class="brace"> } </span>
+        </div>
+      </a>
+    <div id="results"></div>
+  </body>
 </html>
